@@ -10,11 +10,26 @@ public class TrafficLightPanel extends JPanel {
     setPreferredSize(new Dimension(200, 400));
     setBackground(Color.LIGHT_GRAY);
 
-    /**
-     * TODO:
-     * create timer logic outside of the panel here
-     * use setTrafficLightState(...) every 5 seconds
-     */
+    ActionListener changeLight = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        switch (currentState) {
+          case RED:
+            setTrafficLightState(TrafficLightState.YELLOW);
+            break;
+          case YELLOW:
+            setTrafficLightState(TrafficLightState.GREEN);
+            break;
+          case GREEN:
+            setTrafficLightState(TrafficLightState.RED);
+            break;
+        }
+      }
+    };
+
+    Timer timer = new Timer(5000, changeLight);
+    timer.setInitialDelay(5000);
+    timer.start();
   }
 
   /**
