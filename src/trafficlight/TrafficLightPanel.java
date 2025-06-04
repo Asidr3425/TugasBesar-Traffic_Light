@@ -8,7 +8,7 @@ public class TrafficLightPanel extends JPanel {
 
   public TrafficLightPanel() {
     setPreferredSize(new Dimension(200, 400));
-    setBackground(Color.DARK_GRAY);
+    setBackground(Color.LIGHT_GRAY);
 
     /**
      * TODO:
@@ -26,27 +26,68 @@ public class TrafficLightPanel extends JPanel {
     repaint();
   }
 
+  private void drawLight(Graphics2D g2, int x, int y, int diameter, int glowSize, TrafficLightState state,
+      TrafficLightState current) {
+    Color colorOn;
+    switch (state) {
+      case RED:
+        colorOn = Color.RED;
+        break;
+      case YELLOW:
+        colorOn = Color.YELLOW;
+        break;
+      case GREEN:
+        colorOn = Color.GREEN;
+        break;
+      default:
+        colorOn = Color.GRAY;
+    }
+
+    if (state == current) {
+      // GLOW effect
+      int glowDiameter = diameter + glowSize;
+      int glowX = x - glowSize / 2;
+      int glowY = y - glowSize / 2;
+      Color glowColor = new Color(colorOn.getRed(), colorOn.getGreen(), colorOn.getBlue(), 80);
+      g2.setColor(glowColor);
+      g2.fillOval(glowX, glowY, glowDiameter, glowDiameter);
+      g2.setColor(colorOn);
+    } else {
+      g2.setColor(Color.DARK_GRAY);
+    }
+
+    g2.fillOval(x, y, diameter, diameter);
+  }
+
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D) g;
 
     // Size of circle's position
     int diameter = 60;
     int spacing = 30;
-    int x = (getWidth() - diameter) / 2;
-    int y = 50;
+    int glowSize = 20;
+    int boxWidth = 100;
+    int boxHeight = 3 * diameter + 2 * spacing + 40;
+    int boxX = (getWidth() - boxWidth) / 2;
+    int boxY = 30;
+    int x = boxX + (boxWidth - diameter) / 2;
+    int y = boxY + 20;
+
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setColor(new Color(30, 30, 30));
+    g2.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 20, 20);
 
     // Red light
-    g.setColor(currentState == TrafficLightState.RED ? Color.RED : Color.DARK_GRAY);
-    g.fillOval(x, y, diameter, diameter);
+    drawLight(g2, x, y, diameter, glowSize, TrafficLightState.RED, currentState);
 
     // Yellow light
-    g.setColor(currentState == TrafficLightState.YELLOW ? Color.YELLOW : Color.DARK_GRAY);
-    g.fillOval(x, y, diameter, diameter);
+    y += diameter + spacing;
+    drawLight(g2, x, y, diameter, glowSize, TrafficLightState.YELLOW, currentState);
 
     // Green Light
     y += diameter + spacing;
-    g.setColor(currentState == TrafficLightState.GREEN ? Color.GREEN : Color.GRAY);
-    g.fillOval(x, y, diameter, diameter);
+    drawLight(g2, x, y, diameter, glowSize, TrafficLightState.GREEN, currentState);
   }
 }
