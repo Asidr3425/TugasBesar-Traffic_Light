@@ -9,12 +9,6 @@ public class TrafficLightPanel extends JPanel {
   public TrafficLightPanel() {
     setPreferredSize(new Dimension(200, 400));
     setBackground(Color.LIGHT_GRAY);
-
-    /**
-     * TODO:
-     * create timer logic outside of the panel here
-     * use setTrafficLightState(...) every 5 seconds
-     */
   }
 
   /**
