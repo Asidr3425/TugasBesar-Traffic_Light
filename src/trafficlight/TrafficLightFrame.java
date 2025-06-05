@@ -18,12 +18,16 @@ public class TrafficLightFrame extends JFrame {
     setLocationRelativeTo(null);
     setVisible(true);
 
-    /**
-     * TODO:
-     * Add a timer here (javax.swing.Timer) to change the traffic light state every
-     * 5 seconds and call panel.setTrafficLightState(...). Order: RED -> YELLOW ->
-     * GREEN -> RED
-     */
+    final TrafficLightState[] states = TrafficLightState.values();
+    panel.setTrafficLightState(states[0]);
+    final int[] idx = { 0 };
+
+    Timer timer = new Timer(5000, e -> {
+      idx[0] = (idx[0] + 1) % states.length;
+      panel.setTrafficLightState(states[idx[0]]);
+    });
+    timer.setInitialDelay(5000); 
+    timer.start();
   }
 
   public TrafficLightPanel getTrafficLightPanel() {
