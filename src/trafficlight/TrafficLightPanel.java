@@ -1,7 +1,7 @@
 package trafficlight;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class TrafficLightPanel extends JPanel {
   private TrafficLightState currentState = TrafficLightState.RED;
@@ -10,11 +10,7 @@ public class TrafficLightPanel extends JPanel {
     setPreferredSize(new Dimension(200, 400));
     setBackground(Color.LIGHT_GRAY);
 
-    /**
-     * TODO:
-     * create timer logic outside of the panel here
-     * use setTrafficLightState(...) every 5 seconds
-     */
+
   }
 
   /**
@@ -28,20 +24,12 @@ public class TrafficLightPanel extends JPanel {
 
   private void drawLight(Graphics2D g2, int x, int y, int diameter, int glowSize, TrafficLightState state,
       TrafficLightState current) {
-    Color colorOn;
-    switch (state) {
-      case RED:
-        colorOn = Color.RED;
-        break;
-      case YELLOW:
-        colorOn = Color.YELLOW;
-        break;
-      case GREEN:
-        colorOn = Color.GREEN;
-        break;
-      default:
-        colorOn = Color.GRAY;
-    }
+    Color colorOn = switch (state) {
+      case RED -> Color.RED;
+      case YELLOW -> Color.YELLOW;
+      case GREEN -> Color.GREEN;
+      default -> Color.GRAY;
+    };
 
     if (state == current) {
       // GLOW effect
